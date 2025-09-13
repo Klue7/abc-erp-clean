@@ -1,0 +1,4 @@
+external_ref,name,tier_code,email,phone,billing_line1,delivery_line1,city,province,country,gps_lat,gps_lng,vat_number,notes
+CUST-001,BuildRight Contractors,Retail,pm@buildright.co.za,+27 82 123 0001,12 Main Rd,Site B Erf 102,Gqeberha,EC,ZA,-33.9608,25.6022,4790123456,Delivers 7–16h
+CUST-002,Public Works EC,Contractor,tenders@ecpw.gov.za,+27 41 390 0000,1 Dr Pixley Ave,Depot Gate 3,Bhisho,EC,ZA,-32.848,27.442,,POD requires stamp
+CUST-003,GreenScape Landscaping,Tender,info@greenscape.co.za,+27 41 123 4567,45 Green St,Site A Erf 101,Gqeberha,EC,ZA,-33.9608,25.6022,1234567890,Delivers 8–17h

@@ -1,0 +1,4 @@
+sku,location_bin,qty_on_hand,qty_reserved,qty_on_order
+BRK-MN-7MPA,YARD-A1,960,0,4800
+CEM-425N-50,STORE-01,120,10,200
+AGG-19MM-1T,BAY-3,8,2,10

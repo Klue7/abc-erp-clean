@@ -1,0 +1,3 @@
+vehicle_code,name,type,reg_number,max_payload_kg,bed_volume_m3,axle_limit_kg,fuel_l_per_100km,driver_hourly_rate,cost_per_km_base,service_interval_km,tyre_size,tyre_cost_each,tyre_count,notes
+TRK-8T,FAW 8T Tipper,tipper,CAA123456,8000,5.2,9000,28,85,9.5,15000,315/80R22.5,4800,6,General deliveries
+LDV-1T,Isuzu KB 1T,ldv,CAA654321,1000,2.0,1400,10,70,4.2,10000,265/65R17,2500,4,Small drops / samples

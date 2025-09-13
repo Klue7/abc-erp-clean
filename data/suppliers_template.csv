@@ -1,0 +1,4 @@
+supplier_code,name,contact_name,email,phone,address_line1,city,province,country,lead_time_days,min_order_value,notes
+ABC_BRICKCO,ABC Clay Brick Co.,Naledi M.,sales@abcbrick.co.za,+27 41 000 1111,12 Yard Rd,Gqeberha,EC,ZA,7,5000,Primary brick supplier
+AFRIM,Afrimix Cement,J. Botha,orders@afrimix.co.za,+27 11 222 3333,1 Industry Ave,Johannesburg,GP,ZA,3,3000,Cement supplier
+QUARRY1,Fairview Quarry,Sipho K.,dispatch@fairviewq.co.za,+27 41 444 5555,R75 Quarry Gate,Gqeberha,EC,ZA,2,2000,Aggregate supplier
