@@ -1,14 +1,13 @@
-import { currentUser } from "@clerk/nextjs/server";
+﻿import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
+export default async function Page() {
   const user = await currentUser();
+  if (!user) redirect("/sign-in");
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
-      <pre className="bg-white p-4 rounded border overflow-auto">
-        {JSON.stringify({ id: user?.id, email: user?.emailAddresses?.[0]?.emailAddress }, null, 2)}
-      </pre>
-      <p className="mt-4 text-sm text-slate-600">This page is protected by Clerk.</p>
-    </div>
+    <main className="mx-auto max-w-6xl p-6">
+      <h1 className="text-2xl font-semibold">Welcome, {user.firstName ?? "there"}</h1>
+      <p className="mt-2 text-sm text-gray-600">This is your dashboard shell.</p>
+    </main>
   );
 }

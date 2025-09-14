@@ -1,27 +1,34 @@
 {
   "name": "abc-erp-clean",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Awe",
+  "main": "index.js",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Klue7/abc-erp-clean.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Klue7/abc-erp-clean/issues"
+  },
+  "homepage": "https://github.com/Klue7/abc-erp-clean#readme",
+  "private": true,
+  "packageManager": "pnpm@10.16.1",
   "devDependencies": {
+    "@types/node": "^24.3.3",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "15.5.3",
     "prettier": "^3.6.2",
     "turbo": "^2.5.6",
-    "typescript": "5.9.2"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "npm@10.8.2",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "dependencies": {
-    "svix": "^1.76.1"
+    "typescript": "^5.9.2"
   }
 }

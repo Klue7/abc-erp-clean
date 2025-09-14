@@ -1,25 +1,21 @@
-import Link from "next/link";
+﻿"use client";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="max-w-3xl mx-auto p-8">
-      <header className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold">ABC ERP</h1>
-        <SignedIn><UserButton afterSignOutUrl="/" /></SignedIn>
+    <main className="p-8 space-y-6">
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">abc-erp-clean</h1>
+        <SignedIn><UserButton/></SignedIn>
       </header>
 
       <SignedOut>
-        <div className="space-x-3">
-          <Link className="px-4 py-2 rounded bg-slate-900 text-white" href="/sign-in">Sign in</Link>
-          <Link className="px-4 py-2 rounded border" href="/sign-up">Create account</Link>
-        </div>
+        <a className="underline" href="/sign-in">Sign in</a> or{" "}
+        <a className="underline" href="/sign-up">Sign up</a>
       </SignedOut>
 
       <SignedIn>
-        <div className="space-x-3">
-          <Link className="px-4 py-2 rounded bg-blue-600 text-white" href="/dashboard">Go to Dashboard</Link>
-        </div>
+        <p>Welcome! You’re signed in.</p>
       </SignedIn>
     </main>
   );
