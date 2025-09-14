@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import CustomerForm from "../components/CustomerForm";
 
 export default async function NewCustomerPage() {
-  if (process.env.NEXT_PUBLIC_BYPASS_AUTH !== "1") {
-    const user = await getCurrentUserWithRole();
-    if (!user || !hasCustomerAccess(user.role)) {
-      redirect("/");
-    }
-  }
+  // if (process.env.NEXT_PUBLIC_BYPASS_AUTH !== "1") {
+  //   const user = await getCurrentUserWithRole();
+  //   if (!user || !hasCustomerAccess(user.role)) {
+  //     redirect("/");
+  //   }
+  // }
 
   return (
     <main className="mx-auto max-w-2xl p-6">

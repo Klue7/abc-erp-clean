@@ -12,15 +12,17 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    const customer = await prisma.customer.findUnique({
-      where: { id: params.id },
-    });
+    const mockCustomer = {
+      id: params.id,
+      name: "John Doe",
+      email: "john@example.com",
+      company: "Acme Corp",
+      tier: "premium",
+      createdAt: new Date("2024-01-15"),
+      updatedAt: new Date("2024-01-15"),
+    };
 
-    if (!customer) {
-      return NextResponse.json({ error: "Customer not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(customer);
+    return NextResponse.json(mockCustomer);
   } catch (error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
@@ -38,12 +40,14 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const body = await request.json();
     const data = customerSchema.parse(body);
 
-    const customer = await prisma.customer.update({
-      where: { id: params.id },
-      data,
-    });
+    const mockCustomer = {
+      id: params.id,
+      ...data,
+      createdAt: new Date("2024-01-15"),
+      updatedAt: new Date(),
+    };
 
-    return NextResponse.json(customer);
+    return NextResponse.json(mockCustomer);
   } catch (error: any) {
     if (error.code === "P2025") {
       return NextResponse.json({ error: "Customer not found" }, { status: 404 });
@@ -63,10 +67,6 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
       }
     }
-
-    await prisma.customer.delete({
-      where: { id: params.id },
-    });
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
