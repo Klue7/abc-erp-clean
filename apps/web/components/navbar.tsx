@@ -10,6 +10,7 @@ export default function Navbar() {
         <nav className="flex items-center gap-4">
           <SignedIn>
             <Link href="/dashboard" className="text-sm hover:underline">Dashboard</Link>
+            <Link href="/customers" className="text-sm hover:underline">Customers</Link>
             <UserButton />
           </SignedIn>
           <SignedOut>
