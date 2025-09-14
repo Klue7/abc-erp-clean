@@ -6,17 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "playwright test"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.32.0",
+    "@prisma/client": "^6.16.1",
     "next": "15.5.3",
+    "prisma": "^6.16.1",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@abc/tsconfig": "workspace:*",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
