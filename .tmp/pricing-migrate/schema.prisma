@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL_PRICING")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL_PRICING")
+}
+
+enum UomCode {
+  per_1000
+  per_ton
+  per_50kg_bag
+  per_8ton_load
+  per_26ton_load
+  each
+}
+
+enum PriceTierCode {
+  RETAIL
+  CONTRACTOR
+  TENDER
+  INHOUSE
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  products  Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+  products Product[]
+}
+
+model Uom {
+  id          String  @id @default(cuid())
+  code        UomCode @unique
+  description String?
+  base        Boolean @default(false)
+  products    Product[]
+}
+
+model Product {
+  id         String    @id @default(cuid())
+  itemCode   String    @unique
+  name       String
+  supplierId String?
+  categoryId String?
+  baseUomId  String?
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id])
+  baseUom    Uom?      @relation(fields: [baseUomId], references: [id])
+  costs      CostVersion[]
+  spec       ProductSpec?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model ProductSpec {
+  id                  String   @id @default(cuid())
+  productId           String   @unique
+  product             Product  @relation(fields: [productId], references: [id])
+  lengthMm            Int?
+  widthMm             Int?
+  heightMm            Int?
+  unitWeightKg        Float?
+  densityKgPerM3      Float?
+  packQty             Int?
+  bricksPerPallet     Int?
+  palletDimensionsMm  String?
+  techSpecsLink       String?
+  msdsLink            String?
+  applicationNotes    String?
+  factoryLeadTimeDays Int?
+  abcStockLeadTimeDays Int?
+  minOrderQty         Int?
+  reorderPoint        Int?
+  safetyStock         Int?
+  notes               String?
+}
+
+model CostVersion {
+  id                 String   @id @default(cuid())
+  productId          String
+  product            Product  @relation(fields: [productId], references: [id])
+  effectiveFrom      DateTime @default(now())
+  sourceWorkbook     String?
+  sourceWorkbookHash String?
+  unitCost           Float?
+  bagCost            Float?
+  loadingFee         Float?
+  transportPerUnit   Float?
+  otherCost          Float?
+  adminPerUnit       Float?
+  storagePerUnit     Float?
+  totalCostProvided  Float?
+  landedExVat        Float?
+  checksum           String?
+  prices             PriceList[]
+  @@index([productId, effectiveFrom])
+}
+
+model PriceTier {
+  id            String         @id @default(cuid())
+  code          PriceTierCode  @unique
+  name          String
+  defaultMarkup Float
+  active        Boolean        @default(true)
+  description   String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  prices        PriceList[]
+}
+
+model PriceList {
+  id            String    @id @default(cuid())
+  costVersionId String
+  tierId        String
+  costVersion   CostVersion @relation(fields: [costVersionId], references: [id])
+  tier          PriceTier   @relation(fields: [tierId], references: [id])
+  markup        Float
+  priceExVat    Float
+  gpPct         Float
+  @@unique([costVersionId, tierId])
+}

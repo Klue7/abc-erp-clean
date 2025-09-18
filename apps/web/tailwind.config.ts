@@ -1,11 +1,6 @@
-﻿import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss";
 
-export default {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./pages/**/*.{ts,tsx}"
-  ],
-  theme: { extend: {} },
-  plugins: []
-} satisfies Config;
+// Re-export the JavaScript config so tools consuming the TypeScript file stay in sync.
+import config from "./tailwind.config.js";
+
+export default config satisfies Config;

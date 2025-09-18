@@ -1,12 +1,6 @@
-﻿import { PrismaClient } from "@prisma/client";
+﻿// Re-export the shared Prisma client from the central package.
+// Using the package name `@abc/db` should be resolved by tsconfig path mapping.
+import { prisma as sharedPrisma } from "@abc/db";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+export const prisma = sharedPrisma;
 
-export const prisma =
-  globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
