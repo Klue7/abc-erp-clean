@@ -3,8 +3,8 @@ import { getCurrentUserWithRole } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { createEmployeeAction, toggleEmployeeActiveAction } from "@/app/actions/employees";
+import { createEmployeeAction } from "@/app/actions/employees";
+import { EmployeesDataTable } from "./data-table";
 
 // If Prisma delegate is missing during early setup, surface a friendly message
 // @ts-expect-error - runtime guard, not a TS type issue
@@ -78,8 +78,52 @@ export default async function EmployeesPage() {
               <Input name="email" type="email" placeholder="jane@example.com" />
             </div>
             <div className="space-y-1.5">
+              <label className="text-sm">Work Email</label>
+              <Input name="workEmail" type="email" placeholder="jane.doe@company.co.za" />
+            </div>
+            <div className="space-y-1.5">
               <label className="text-sm">Role</label>
               <Input name="role" placeholder="Sales / Driver / Admin" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Contact Number</label>
+              <Input name="contactNumber" placeholder="000-000-0000" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Avatar URL</label>
+              <Input name="avatarUrl" placeholder="https://..." />
+            </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <label className="text-sm">Address (GPS location track)</label>
+              <Input name="address" placeholder="Street, City, GPS" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Basic Salary (Rand)</label>
+              <Input name="basicSalary" type="number" min="0" step="0.01" placeholder="18000" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">ID Number</label>
+              <Input name="nationalId" placeholder="Identity number" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Bank</label>
+              <Input name="bankName" placeholder="Bank name" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Bank Account Holder</label>
+              <Input name="bankAccountHolder" placeholder="Account holder" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Bank Account Number</label>
+              <Input name="bankAccountNumber" placeholder="Account number" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-sm">Team</label>
+              <Input name="team" placeholder="Operations" />
+            </div>
+            <div className="sm:col-span-3 space-y-1.5">
+              <label className="text-sm">File uploads / notes</label>
+              <Input name="uploadsInfo" placeholder="Links or filenames" />
             </div>
             <div className="flex items-end gap-3">
               <input type="checkbox" name="isActive" defaultChecked className="size-4 accent-current" />
@@ -97,47 +141,19 @@ export default async function EmployeesPage() {
           <CardTitle>Directory</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto rounded-lg border">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/40">
-                <tr className="text-left [&>th]:px-3 [&>th]:py-2">
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th className="text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="[&>tr]:border-t">
-                {employees.map((employee) => (
-                  <tr key={employee.id} className="[&>td]:px-3 [&>td]:py-2">
-                    <td>{employee.name}</td>
-                    <td className="text-muted-foreground">{employee.email ?? "—"}</td>
-                    <td>{employee.role ?? "—"}</td>
-                    <td>
-                      <Badge className={employee.isActive ? undefined : "bg-muted text-muted-foreground"}>
-                        {employee.isActive ? "ACTIVE" : "INACTIVE"}
-                      </Badge>
-                    </td>
-                    <td className="text-right">
-                      <form action={toggleEmployeeActiveAction.bind(null, employee.id)}>
-                        <Button type="submit" variant="outline" size="sm">
-                          {employee.isActive ? "Deactivate" : "Activate"}
-                        </Button>
-                      </form>
-                    </td>
-                  </tr>
-                ))}
-                {employees.length === 0 && (
-                  <tr>
-                    <td className="px-3 py-6 text-center text-muted-foreground" colSpan={5}>
-                      No employees yet.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <EmployeesDataTable
+            data={employees.map((employee) => ({
+              id: employee.id,
+              employeeId: employee.employeeId,
+              name: employee.name,
+              email: employee.email,
+              workEmail: employee.workEmail,
+              contactNumber: employee.contactNumber,
+              role: employee.role,
+              team: employee.team,
+              isActive: employee.isActive,
+            }))}
+          />
         </CardContent>
       </Card>
     </main>

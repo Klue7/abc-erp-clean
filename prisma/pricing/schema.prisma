@@ -145,6 +145,14 @@ model Employee {
   email         String?
   workEmail     String?
   contactNumber String?
+  avatarUrl     String?
+  address       String?
+  bankName      String?
+  bankAccountHolder String?
+  bankAccountNumber String?
+  nationalId    String?
+  uploadsInfo   String?
+  basicSalary   Float?
   role          StaffRole @default(STAFF)
   team          String?
   isActive      Boolean   @default(true)
