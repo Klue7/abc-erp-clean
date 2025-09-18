@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "web: dev", "type": "shell", "command": "pnpm --filter web dev", "problemMatcher": [] },
+    { "label": "web: prisma generate", "type": "shell", "command": "pnpm --filter web prisma:generate", "problemMatcher": [] },
+    { "label": "web: prisma push (pricing)", "type": "shell", "command": "pnpm --filter web pricing:push", "problemMatcher": [] },
+    { "label": "web: seed employee", "type": "shell", "command": "pnpm --filter web seed:employee", "problemMatcher": [] },
+    { "label": "web: doctor", "type": "shell", "command": "pnpm --filter web doctor", "problemMatcher": [] }
+  ]
+}
