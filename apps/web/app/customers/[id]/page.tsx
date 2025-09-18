@@ -1,28 +1,28 @@
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import { getCurrentUserWithRole, hasCustomerAccess } from "@/lib/auth";
-import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
+async function ensureAccess() {
+  if (process.env.NEXT_PUBLIC_BYPASS_AUTH === "1") return;
+  const user = await getCurrentUserWithRole();
+  if (!user || !hasCustomerAccess(user.role)) {
+    redirect("/");
+  }
+}
+
+async function loadCustomer(id: string) {
+  const customer = await prisma.customer.findUnique({
+    where: { id },
+    select: { id: true, name: true, email: true, company: true, tier: true, createdAt: true },
+  });
+  if (!customer) notFound();
+  return customer;
+}
+
 export default async function CustomerPage({ params }: { params: { id: string } }) {
-  // if (process.env.NEXT_PUBLIC_BYPASS_AUTH !== "1") {
-  //   const user = await getCurrentUserWithRole();
-  //   if (!user || !hasCustomerAccess(user.role)) {
-  //     redirect("/");
-  //   }
-  // }
-
-  const customer = {
-    id: params.id,
-    name: "John Doe",
-    email: "john@example.com", 
-    company: "Acme Corp",
-    tier: "premium",
-    createdAt: new Date("2024-01-15"),
-  };
-
-  // if (!customer) {
-  //   notFound();
-  // }
+  await ensureAccess();
+  const customer = await loadCustomer(params.id);
 
   return (
     <main className="mx-auto max-w-2xl p-6">

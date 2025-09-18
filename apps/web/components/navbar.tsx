@@ -10,7 +10,9 @@ export default function Navbar() {
         <nav className="flex items-center gap-4">
           <SignedIn>
             <Link href="/dashboard" className="text-sm hover:underline">Dashboard</Link>
+            <Link href="/catalog" className="text-sm hover:underline">Catalog</Link>
             <Link href="/customers" className="text-sm hover:underline">Customers</Link>
+            <Link href="/pricing-tiers" className="text-sm hover:underline">Pricing tiers</Link>
             <UserButton />
           </SignedIn>
           <SignedOut>

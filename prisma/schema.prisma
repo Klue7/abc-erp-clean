@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// >>> ABC_PRICING_MODELS_BEGIN
+
+enum UomCode {
+  per_1000
+  per_ton
+  per_50kg_bag
+  per_8ton_load
+  per_26ton_load
+  each
+}
+
+enum PriceTierCode {
+  RETAIL
+  CONTRACTOR
+  TENDER
+  INHOUSE
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+}
+
+model Uom {
+  id          String  @id @default(cuid())
+  code        UomCode @unique
+  description String?
+  base        Boolean @default(false)
+}
+
+model PriceTier {
+  id            String        @id @default(cuid())
+  code          PriceTierCode @unique
+  name          String
+  defaultMarkup Float
+  active        Boolean       @default(true)
+  description   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+// <<< ABC_PRICING_MODELS_END

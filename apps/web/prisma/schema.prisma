@@ -1,33 +1,41 @@
-generator client {
-  provider = "prisma-client-js"
-}
+// archived: moved to packages/db/prisma/schema.prisma
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
-
-model User {
+model CustomerTier {
   id        String   @id @default(cuid())
-  clerkId   String   @unique
-  email     String   @unique
-  name      String?
-  role      String   @default("user")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("users")
-}
-
-model Customer {
-  id        String   @id @default(cuid())
+  code      String   @unique
   name      String
-  email     String   @unique
-  company   String?
-  tier      String   @default("basic")
+  discount  Float    @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("customers")
+  products  ProductPrice[]
+
+  @@map("customer_tiers")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  sku         String   @unique
+  name        String
+  description String?
+  basePrice   Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  prices      ProductPrice[]
+
+  @@map("products")
+}
+
+model ProductPrice {
+  id        String   @id @default(cuid())
+  productId String
+  tierId    String
+  price     Float
+
+  product   Product     @relation(fields: [productId], references: [id])
+  tier      CustomerTier @relation(fields: [tierId], references: [id])
+
+  @@unique([productId, tierId])
+  @@map("product_prices")
 }

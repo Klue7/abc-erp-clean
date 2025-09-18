@@ -5,6 +5,12 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@abc/db": [
+        "../../packages/db/src"
+      ],
+      "@abc/db/*": [
+        "../../packages/db/src/*"
       ]
     },
     "allowJs": true,
