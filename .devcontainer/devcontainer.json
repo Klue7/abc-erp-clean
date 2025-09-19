@@ -1,0 +1,35 @@
+{
+  "name": "Genesis Super ERP - Web",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": true
+    }
+  },
+  "postCreateCommand": "corepack enable && pnpm -v && pnpm i",
+  "forwardPorts": [3000, 5555],
+  "containerEnv": {
+    "DATABASE_URL_PRICING": "${localEnv:DATABASE_URL_PRICING}",
+    "SHADOW_DATABASE_URL_PRICING": "${localEnv:SHADOW_DATABASE_URL_PRICING}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Prisma.prisma",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.exclude": { "**/.next": true, "**/node_modules": true }
+      }
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+}

@@ -1,7 +1,6 @@
 "use server";
 
 import type { Prisma } from "@prisma/client";
-
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
@@ -53,7 +52,8 @@ export async function createEmployeeAction(formData: FormData) {
       return { ok: false, reason: "not_authorized" as const };
     }
 
-    // @ts-ignore – defensive: prisma may not have delegate at runtime
+    // defensive: prisma may not have the delegate at runtime on partial schemas
+    // @ts-ignore
     if (!prisma?.employee) {
       return { ok: false, reason: "missing_model" as const };
     }
@@ -135,4 +135,23 @@ export async function toggleEmployeeActiveAction(id: string) {
     console.error("[toggleEmployeeActiveAction]", e);
     return { ok: false, reason: "server_error" as const };
   }
+}
+
+export async function updateEmployeeAction(_prev: unknown, fd: FormData) {
+  // function-level "use server" is optional because we used a file-level directive
+  if (!prisma?.employee?.update) return { ok: false as const, reason: "no_model" as const };
+
+  const id = String(fd.get("id") ?? "");
+  const name = String(fd.get("name") ?? "").trim();
+  const isActive = fd.get("isActive") === "on" || fd.get("isActive") === "true";
+
+  if (!id || !name) return { ok: false as const, reason: "invalid_input" as const };
+
+  await prisma.employee.update({
+    where: { id },
+    data: { name, isActive },
+  });
+
+  revalidatePath("/employees");
+  return { ok: true as const };
 }

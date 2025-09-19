@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toggleEmployeeActiveAction } from "@/app/actions/employees";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 export type EmployeeRow = {
   id: string;
@@ -38,6 +39,14 @@ export type EmployeeRow = {
   email: string | null;
   workEmail: string | null;
   contactNumber: string | null;
+  address: string | null;
+  bankName: string | null;
+  bankAccountHolder: string | null;
+  bankAccountNumber: string | null;
+  avatarUrl: string | null;
+  basicSalary: number | null;
+  nationalId: string | null;
+  uploadsInfo: string | null;
   role: string | null;
   team: string | null;
   isActive: boolean;
@@ -52,6 +61,8 @@ export function EmployeesDataTable({ data }: EmployeesDataTableProps) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogEmployee, setDialogEmployee] = React.useState<EmployeeRow | null>(null);
 
   const columns = React.useMemo<ColumnDef<EmployeeRow>[]>(
     () => [
@@ -146,7 +157,15 @@ export function EmployeesDataTable({ data }: EmployeesDataTableProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={(event) => {
+                    event.preventDefault();
+                    setDialogEmployee(employee);
+                    setDialogOpen(true);
+                  }}
+                >
+                  Edit
+                </DropdownMenuItem>
                 <form action={toggleEmployeeActiveAction.bind(null, employee.id)}>
                   <DropdownMenuItem asChild>
                     <button type="submit" className="w-full text-left">
@@ -163,7 +182,7 @@ export function EmployeesDataTable({ data }: EmployeesDataTableProps) {
         },
       },
     ],
-    []
+    [setDialogEmployee, setDialogOpen]
   );
 
   const table = useReactTable({
@@ -276,6 +295,67 @@ export function EmployeesDataTable({ data }: EmployeesDataTableProps) {
           </Button>
         </div>
       </div>
+      <EmployeeDetailDialog
+        employee={dialogEmployee}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
+    </div>
+  );
+}
+
+interface EmployeeDetailDialogProps {
+  employee: EmployeeRow | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+function EmployeeDetailDialog({ employee, open, onOpenChange }: EmployeeDetailDialogProps) {
+  if (!employee) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogTitle>Employee details</DialogTitle>
+          <p className="text-sm text-muted-foreground">No employee selected.</p>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  const money = (value: number | null | undefined) =>
+    value == null ? "—" : `R ${value.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-xl">
+        <DialogTitle className="mb-3 text-lg font-semibold">{employee.name}</DialogTitle>
+        <div className="grid gap-3 text-sm">
+          <DetailRow label="Employee ID" value={employee.employeeId} mono />
+          <DetailRow label="Email" value={employee.email ?? "—"} />
+          <DetailRow label="Work email" value={employee.workEmail ?? "—"} />
+          <DetailRow label="Contact" value={employee.contactNumber ?? "—"} />
+          <DetailRow label="Role" value={employee.role ?? "—"} />
+          <DetailRow label="Team" value={employee.team ?? "—"} />
+          <DetailRow label="Status" value={employee.isActive ? "Active" : "Inactive"} />
+          <DetailRow label="Address" value={employee.address ?? "—"} />
+          <DetailRow label="Bank" value={employee.bankName ?? "—"} />
+          <DetailRow label="Account holder" value={employee.bankAccountHolder ?? "—"} />
+          <DetailRow label="Account number" value={employee.bankAccountNumber ?? "—"} />
+          <DetailRow label="Basic salary" value={money(employee.basicSalary)} />
+          <DetailRow label="ID number" value={employee.nationalId ?? "—"} />
+          <DetailRow label="Uploads / notes" value={employee.uploadsInfo ?? "—"} />
+          <DetailRow label="Avatar URL" value={employee.avatarUrl ?? "—"} />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function DetailRow({ label, value, mono = false }: { label: string; value: React.ReactNode; mono?: boolean }) {
+  return (
+    <div className="grid gap-1">
+      <span className="text-xs uppercase tracking-wide text-muted-foreground">{label}</span>
+      <span className={mono ? "font-mono text-sm" : "text-sm"}>{value}</span>
     </div>
   );
 }
